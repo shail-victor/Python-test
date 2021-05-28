@@ -1,5 +1,6 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
+import pickle
 
 # Read the data
 data = pd.read_csv('pipeline_dummy_data.csv')
@@ -75,6 +76,12 @@ preds = my_pipeline.predict(X_valid)
 # Evaluate the model
 score = mean_absolute_error(y_valid, preds)
 print('MAE:', score)
+filename = 'pickle_model.pkl'
+pickle.dump(model, open(filename, 'wb'))
+
+loaded_model = pickle.load(open("pickle_model.pkl", 'rb'))
+result = loaded_model.predict(X_valid_full)
+print("pickle model result: ", result)
 
 
 

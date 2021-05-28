@@ -1,0 +1,30 @@
+Data Columns Name: ['Suburb', 'Address', 'Rooms', 'Type', 'Price', 'Method', 'SellerG', 'Date', 'Distance', 'Postcode', 'Bedroom2', 'Bathroom', 'Car', 'Landsize', 'BuildingArea', 'YearBuilt', 'CouncilArea', 'Lattitude', 'Longtitude', 'Regionname', 'Propertycount']
+ Data read completed
+Divide data into training and validation subsets
+Seprate numeric and categorical columns
+Mean Absolute error score :  160679.18917034855
+
+
+
+Traceback (most recent call last):
+  File "C:/Users/Shailesh Mishra/PycharmProjects/Python-Projects/Practice/sklearn_pipeline/pipeline_main.py", line 148, in <module>
+    main()
+  File "C:/Users/Shailesh Mishra/PycharmProjects/Python-Projects/Practice/sklearn_pipeline/pipeline_main.py", line 135, in main
+    result = loaded_model.predict(xtest)
+  File "C:\Users\Shailesh Mishra\AppData\Local\Programs\Python\Python37-32\Lib\site-packages\sklearn\ensemble\_forest.py", line 766, in predict
+    X = self._validate_X_predict(X)
+  File "C:\Users\Shailesh Mishra\AppData\Local\Programs\Python\Python37-32\Lib\site-packages\sklearn\ensemble\_forest.py", line 412, in _validate_X_predict
+    return self.estimators_[0]._validate_X_predict(X, check_input=True)
+  File "C:\Users\Shailesh Mishra\AppData\Local\Programs\Python\Python37-32\Lib\site-packages\sklearn\tree\_classes.py", line 380, in _validate_X_predict
+    X = check_array(X, dtype=DTYPE, accept_sparse="csr")
+  File "C:\Users\Shailesh Mishra\AppData\Local\Programs\Python\Python37-32\Lib\site-packages\sklearn\utils\validation.py", line 531, in check_array
+    array = np.asarray(array, order=order, dtype=dtype)
+  File "C:\Users\Shailesh Mishra\AppData\Local\Programs\Python\Python37-32\Lib\site-packages\numpy\core\_asarray.py", line 85, in asarray
+    return array(a, dtype, copy=False, order=order)
+  File "C:\Users\Shailesh Mishra\AppData\Local\Programs\Python\Python37-32\Lib\site-packages\pandas\core\generic.py", line 1781, in __array__
+    return np.asarray(self._values, dtype=dtype)
+  File "C:\Users\Shailesh Mishra\AppData\Local\Programs\Python\Python37-32\Lib\site-packages\numpy\core\_asarray.py", line 85, in asarray
+    return array(a, dtype, copy=False, order=order)
+ValueError: could not convert string to float: 'Williamstown'
+
+Process finished with exit code 1

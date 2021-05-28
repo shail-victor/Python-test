@@ -6,7 +6,7 @@ from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error
-
+import pickle
 
 
 def seperate_num_cat_data(train_df):
@@ -102,7 +102,7 @@ def main():
     y = test_df.Price
     X = test_df.drop(['Price'], axis=1)
 
-    X_train_full, X_valid_full, y_train, y_valid = train_test_split(X, y, train_size=0.8, test_size=0.2,
+    xtrain, xtest, ytrain, ytest = train_test_split(X, y, train_size=0.8, test_size=0.2,
                                                                     random_state=0)
 
 
@@ -113,20 +113,27 @@ def main():
     # test_df.to_csv("test_data.csv", encoding="utf-8-sig")
 
     print("Seprate numeric and categorical columns")
-    categorical_cols, numerical_cols = seperate_num_cat_columns(X_train_full)
+    categorical_cols, numerical_cols = seperate_num_cat_columns(xtrain)
 
     # Keep selected columns only
     my_cols = categorical_cols + numerical_cols
-    X_train = X_train_full[my_cols].copy()
-    X_valid = X_valid_full[my_cols].copy()
+    X_train = xtrain[my_cols].copy()
+    X_valid = xtest[my_cols].copy()
 
     numerical_transformer, categorical_transformer, preprocessor= preprocessing_data(numerical_cols,categorical_cols)
     model = RandomForestRegressor(n_estimators=100, random_state=0)
-    y_valid, preds=create_pipeline(preprocessor,model,X_train,y_train,X_valid,y_valid)
+    ytest, preds=create_pipeline(preprocessor,model,X_train,ytrain,X_valid,ytest)
 
     # Evaluate the model
-    score = mean_absolute_error(y_valid, preds)
+    score = mean_absolute_error(ytest, preds)
     print("Mean Absolute error score : ", score)
+
+    filename = 'pickle_model.pkl'
+    pickle.dump(model, open(filename, 'wb'))
+
+    loaded_model = pickle.load(open("pickle_model.pkl", 'rb'))
+    result = loaded_model.predict(xtest)
+    print("pickle model result: ", result)
 
 
     # df_train_num =numeric_data_completeness(df_train_num)
