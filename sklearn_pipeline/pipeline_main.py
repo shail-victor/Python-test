@@ -7,6 +7,7 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error
 import pickle
+import joblib
 
 
 def seperate_num_cat_data(train_df):
@@ -75,7 +76,7 @@ def preprocessing_data(numerical_cols,categorical_cols):
     return numerical_transformer, categorical_transformer, preprocessor
 
 
-def create_pipeline(preprocessor,model,X_train,y_train,X_valid,y_valid):
+def create_fit_pipeline(preprocessor, model, X_train, y_train, X_valid, y_valid):
     # Bundle preprocessing and modeling code in a pipeline
     my_pipeline = Pipeline(steps=[('preprocessor', preprocessor),
                                   ('model', model)
@@ -102,6 +103,10 @@ def main():
     y = test_df.Price
     X = test_df.drop(['Price'], axis=1)
 
+    print("Seprate numeric and categorical columns")
+    categorical_cols, numerical_cols = seperate_num_cat_columns(X)
+
+
     xtrain, xtest, ytrain, ytest = train_test_split(X, y, train_size=0.8, test_size=0.2,
                                                                     random_state=0)
 
@@ -112,8 +117,7 @@ def main():
     # train_df.to_csv("train_data.csv", encoding="utf-8-sig")
     # test_df.to_csv("test_data.csv", encoding="utf-8-sig")
 
-    print("Seprate numeric and categorical columns")
-    categorical_cols, numerical_cols = seperate_num_cat_columns(xtrain)
+
 
     # Keep selected columns only
     my_cols = categorical_cols + numerical_cols
@@ -121,19 +125,28 @@ def main():
     X_valid = xtest[my_cols].copy()
 
     numerical_transformer, categorical_transformer, preprocessor= preprocessing_data(numerical_cols,categorical_cols)
-    model = RandomForestRegressor(n_estimators=100, random_state=0)
-    ytest, preds=create_pipeline(preprocessor,model,X_train,ytrain,X_valid,ytest)
+    model = RandomForestRegressor(n_estimators=100, random_state=0, max_depth=6)
+    ytest, preds=create_fit_pipeline(preprocessor, model, X_train, ytrain, X_valid, ytest)
 
     # Evaluate the model
     score = mean_absolute_error(ytest, preds)
     print("Mean Absolute error score : ", score)
 
-    filename = 'pickle_model.pkl'
-    pickle.dump(model, open(filename, 'wb'))
+    filename = 'pipeline_pickle_model.pmml'
+    joblib.dump(model,filename)
+    pipelinem=joblib.load(filename)
+    print(pipelinem.score(xtest,ytest))
+    #pred=pd.Series(pipelinem.predict(xtest))
+    #print("pickle model result: ",pred)
 
-    loaded_model = pickle.load(open("pickle_model.pkl", 'rb'))
-    result = loaded_model.predict(xtest)
-    print("pickle model result: ", result)
+    # pickle.dump(model, open(filename, 'wb'))
+    #
+    # loaded_model = pickle.load(open("pickle_model.pkl", 'rb'))
+    # result = loaded_model.predict(xtest)
+    # print("pickle model result: ", result)
+
+
+
 
 
     # df_train_num =numeric_data_completeness(df_train_num)
