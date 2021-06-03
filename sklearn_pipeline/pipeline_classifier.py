@@ -7,6 +7,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 import pandas as pd
+from utility1 import logger_start
 
 
 def create_pipeline():
@@ -40,6 +41,8 @@ def find_classifier_best_Accuracy(X_test, pipe_dict, pipelines, y_test):
 
 
 def main():
+    class_name, method_name = "pipeline.py", main.__name__
+    logger_start(class_name, method_name)
     global X_train, X_test, y_train, y_test
     data = load_iris()
     iris_df = pd.DataFrame(data.data, columns=data.feature_names)
