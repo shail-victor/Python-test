@@ -8,7 +8,6 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error
 import pickle
 import joblib
-from utility import logger_start
 
 
 def seperate_num_cat_data(train_df):
@@ -94,8 +93,6 @@ def create_fit_pipeline(preprocessor, model, X_train, y_train, X_valid, y_valid)
 
 
 def main():
-    class_name, method_name = "pipeline.py", main.__name__
-    logger_start(class_name, method_name)
     test_df = pd.read_csv('pipeline_dummy_data.csv')
     print(" Data Columns Name: %s" % test_df.columns.values.tolist())
     print(" Data read completed")
