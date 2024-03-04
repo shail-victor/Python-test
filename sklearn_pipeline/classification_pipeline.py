@@ -1,6 +1,6 @@
 
-import numpy as np # linear algebra
-import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
+import numpy as np 
+import pandas as pd 
 import matplotlib
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -11,12 +11,12 @@ import seaborn as sns
 from subprocess import check_output
 print(check_output(["ls", "../input"]).decode("utf8"))
 
-# Any results you write to the current directory are saved as output.
+
 data = pd.read_csv('../input/Iris.csv')
 data.head()
 data.info()
 data.drop('Id',axis=1,inplace=True)
-#cool visualization from https://www.kaggle.com/benhamner/python-data-visualizations
+
 
 sns.pairplot(data, hue='Species', size=3)
 from sklearn.preprocessing import LabelEncoder, StandardScaler
